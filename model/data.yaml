@@ -1,0 +1,6 @@
+path: # Add Path
+train: ../train/images/
+val: ../val/images/
+test: ../test/images
+nc: 15
+names: ['car', 'bus', 'person', 'motorcycle', 'rider', 'traffic sign', 'autorickshaw', 'truck', 'vehicle fallback', 'animal', 'bicycle', 'traffic light', 'caravan', 'train', 'trailer']

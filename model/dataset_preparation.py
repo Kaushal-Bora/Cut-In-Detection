@@ -13,31 +13,22 @@ def extract_xml_data(filename, folder):
 	except FileNotFoundError as error:
 		return []
 
+	path = filename.split("/")
+	folder_name = path[-2]
+	img = os.path.splitext(path[-1])[0] + '.jpg'
+	img_name = folder_name + "_" + img
+
 	root = tree.getroot()
 	directory = folder + '/images/'
 	height = root.find('size').find('height').text
 	width = root.find('size').find('width').text
 	objects = root.findall('object')
-
-	if len(objects) == 0:
-		
-		x = directory + "_".join(filename.split('/')[2:])
-
-		try:
-			print("Removed file")
-			os.remove(os.path.splitext(x)[0] + '.jpg')
-		except FileNotFoundError as error:
-			print("File does not exist")
-
 	data = []
-
-	path = filename.split("/")
-	folder = path[-2]
-	img = os.path.splitext(path[-1])[0] + '.jpg'
-	img_name = folder + "_" + img
-
+	
 	for obj in objects:
 		label = obj.find('name').text
+		if label not in ['car', 'bus', 'motorcycle', 'autorickshaw', 'truck', 'caravan', 'trailer']:
+			continue
 		bndbox = obj.find('bndbox')
 		xmin = bndbox.find('xmin').text
 		xmax = bndbox.find('xmax').text
@@ -47,11 +38,23 @@ def extract_xml_data(filename, folder):
 		data.append([img_name, width, height, label, xmin, xmax, ymin, ymax])
 		obj.clear()
 
+	if len(data) == 0:
+		x = directory + "_".join(filename.split('/')[2:])
+
+		try:
+			os.remove(os.path.splitext(x)[0] + '.jpg')
+			print(os.path.splitext(x)[0] + '.jpg')
+			print("Removed file")
+		except FileNotFoundError as error:
+			print("File does not exist")
+
 	return data
 
 
 def label_encoder(data):
-	label = {'car':0, 'bus':1, 'person':2, 'motorcycle':3, 'rider':4, 'traffic sign':5, 'autorickshaw':6, 'truck':7, 'vehicle fallback':8, 'animal':9, 'bicycle':10, 'traffic light':11, 'caravan':12, 'train':13, 'trailer':14}
+	# Limit the number of labels
+	# label = {'car':0, 'bus':1, 'person':2, 'motorcycle':3, 'rider':4, 'traffic sign':5, 'autorickshaw':6, 'truck':7, 'vehicle fallback':8, 'animal':9, 'bicycle':10, 'traffic light':11, 'caravan':12, 'train':13, 'trailer':14}
+	label = {'car':0, 'bus':1, 'motorcycle':2, 'autorickshaw':3, 'truck':4, 'caravan':5, 'trailer':6}
 	return label[data]
 
 
@@ -78,7 +81,6 @@ for folder in folders:
 	for filepath in src:
 		filepath = filepath + ".jpg"
 		filename = "_".join(filepath.split("/")[1:])
-		
 		shutil.copyfile('JPEGImages/' + filepath, dst+filename)
 
 

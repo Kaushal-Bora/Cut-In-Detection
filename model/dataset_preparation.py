@@ -27,7 +27,7 @@ def extract_xml_data(filename, folder):
 	
 	for obj in objects:
 		label = obj.find('name').text
-		if label not in ['car', 'bus', 'motorcycle', 'autorickshaw', 'truck', 'caravan', 'trailer']:
+		if label not in ['car', 'bus', 'motorcycle', 'autorickshaw', 'truck']:
 			continue
 		bndbox = obj.find('bndbox')
 		xmin = bndbox.find('xmin').text
@@ -35,26 +35,16 @@ def extract_xml_data(filename, folder):
 		ymin = bndbox.find('ymin').text
 		ymax = bndbox.find('ymax').text
 
-		data.append([img_name, width, height, label, xmin, xmax, ymin, ymax])
+		data.append([img_name, width, height, 'vehicle', xmin, xmax, ymin, ymax])
 		obj.clear()
-
-	if len(data) == 0:
-		x = directory + "_".join(filename.split('/')[2:])
-
-		try:
-			os.remove(os.path.splitext(x)[0] + '.jpg')
-			print(os.path.splitext(x)[0] + '.jpg')
-			print("Removed file")
-		except FileNotFoundError as error:
-			print("File does not exist")
 
 	return data
 
 
 def label_encoder(data):
-	# Limit the number of labels
 	# label = {'car':0, 'bus':1, 'person':2, 'motorcycle':3, 'rider':4, 'traffic sign':5, 'autorickshaw':6, 'truck':7, 'vehicle fallback':8, 'animal':9, 'bicycle':10, 'traffic light':11, 'caravan':12, 'train':13, 'trailer':14}
-	label = {'car':0, 'bus':1, 'motorcycle':2, 'autorickshaw':3, 'truck':4, 'caravan':5, 'trailer':6}
+	# label = {'car':0, 'bus':1, 'motorcycle':2, 'autorickshaw':3, 'truck':4}
+	label = {'vehicle': 0}
 	return label[data]
 
 
@@ -73,10 +63,10 @@ for folder in folders:
 	dst = folder + '/images/'
 
 	try:
-	    os.makedirs(dst)
-	    print(f"Creating new {folder} directory with {len(src)} images")
+		os.makedirs(dst)
+		print(f"Creating new {folder} directory with {len(src)} images")
 	except FileExistsError as error:
-	    print(f"Directory named {folder} already exists")   
+		print(f"Directory named {folder} already exists")
 
 	for filepath in src:
 		filepath = filepath + ".jpg"
@@ -121,9 +111,9 @@ for folder in folders:
 	group_series = pd.Series(group.groups.keys())
 
 	try:
-	    os.makedirs(dst)
-	    print(f"Creating new {folder} directory with {len(group.groups.keys())} labels")
+		os.makedirs(dst)
+		print(f"Creating new {folder} directory with {len(group.groups.keys())} labels")
 	except FileExistsError as error:
-	    print("Directory Exists")  
-
+		print("Directory Exists")
+		
 	group_series.apply(save_to_text, args=(dst, group))

@@ -35,16 +35,19 @@ def extract_xml_data(filename, folder):
 		ymin = bndbox.find('ymin').text
 		ymax = bndbox.find('ymax').text
 
-		data.append([img_name, width, height, 'vehicle', xmin, xmax, ymin, ymax])
+		if label in ['car', 'autorickshaw']:
+			data.append([img_name, width, height, 'medium', xmin, xmax, ymin, ymax])
+		elif label == 'motorcycle':
+			data.append([img_name, width, height, 'small', xmin, xmax, ymin, ymax])
+		else:
+			data.append([img_name, width, height, 'large', xmin, xmax, ymin, ymax])
 		obj.clear()
 
 	return data
 
 
 def label_encoder(data):
-	# label = {'car':0, 'bus':1, 'person':2, 'motorcycle':3, 'rider':4, 'traffic sign':5, 'autorickshaw':6, 'truck':7, 'vehicle fallback':8, 'animal':9, 'bicycle':10, 'traffic light':11, 'caravan':12, 'train':13, 'trailer':14}
-	# label = {'car':0, 'bus':1, 'motorcycle':2, 'autorickshaw':3, 'truck':4}
-	label = {'vehicle': 0}
+	label = {'small':0, 'medium':1, 'large':2}
 	return label[data]
 
 
@@ -63,10 +66,10 @@ for folder in folders:
 	dst = folder + '/images/'
 
 	try:
-		os.makedirs(dst)
-		print(f"Creating new {folder} directory with {len(src)} images")
+	    os.makedirs(dst)
+	    print(f"Creating new {folder} directory with {len(src)} images")
 	except FileExistsError as error:
-		print(f"Directory named {folder} already exists")
+	    print(f"Directory named {folder} already exists")   
 
 	for filepath in src:
 		filepath = filepath + ".jpg"
@@ -111,9 +114,9 @@ for folder in folders:
 	group_series = pd.Series(group.groups.keys())
 
 	try:
-		os.makedirs(dst)
-		print(f"Creating new {folder} directory with {len(group.groups.keys())} labels")
+	    os.makedirs(dst)
+	    print(f"Creating new {folder} directory with {len(group.groups.keys())} labels")
 	except FileExistsError as error:
-		print("Directory Exists")
-		
+	    print("Directory Exists")  
+
 	group_series.apply(save_to_text, args=(dst, group))

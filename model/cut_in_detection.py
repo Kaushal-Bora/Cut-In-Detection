@@ -3,20 +3,21 @@ from ultralytics import YOLO
 import numpy as np
 import statistics
 import os
-
+import numpy as np
 # Place this file and best.pt file in idd_mm_primary folder
 
 model = YOLO("best.pt")
 
-def find_distance(height_px):
+def find_distance(height_px, vehicle_class):
+	real_height = {0: 1000, 1:1600, 2:4000} # In mm
 	sensor_height = 3.02
 	focal_length = 2.12
 	frame_height = 1088
-	distance = (focal_length*1600*frame_height)/(height_px*sensor_height)
+	distance = (focal_length*real_height[int(vehicle_class)]*frame_height)/(height_px*sensor_height)
 
 	return distance/1000
 
-drive_sequence = "d0" # d0, d1, d2
+drive_sequence = "d1" # d0, d1, d2
 files = os.listdir(f'./idd_multimodal/primary/{drive_sequence}/leftCamImgs')
 
 distance = dict()
@@ -26,13 +27,16 @@ count = 0
 # Use slicing files[:] to loop through small batch of files
 for file in files[3500:]:
 	frame = cv2.imread(f'./idd_multimodal/primary/{drive_sequence}/leftCamImgs/{file}')
-
-	results = model.track(frame, conf=0.75, persist=True)
+	try:
+		results = model.track(frame, conf=0.75, persist=True)
+	except numpy.linalg.LinAlgError:
+		continue
 	annotated_frame = results[0].plot()
 
 	for r in results:
 		bounding = r.boxes.xywh # Coordinates of bounding boxes # Tensor
 		box = r.boxes.id # Tensor
+		vehicle_class = r.boxes.cls
 
 		# If no object is detected clear up distance and vel_angle
 		if box == None:
@@ -52,23 +56,23 @@ for file in files[3500:]:
 			# Initialize distance of object
 			if int(box[j]) not in distance.keys():
 				distance[int(box[j])] = [0, 0]
-				distance[int(box[j])][1] = float(find_distance(h))
+				distance[int(box[j])][1] = float(find_distance(h, vehicle_class[j]))
 				continue
 			else:
 				distance[int(box[j])][0] = distance[int(box[j])][1]
-				distance[int(box[j])][1] = float(find_distance(h))
+				distance[int(box[j])][1] = float(find_distance(h, vehicle_class[j]))
 
 				v = abs(distance[int(box[j])][1]-distance[int(box[j])][0])/0.033
 
 
 				if x+w/2<960: # Find difference between consecutive angles to determine if a car is cutting in
 					cv2.line(annotated_frame, (0, 1080), ((int(x)+int(w/2)), (int(y)-int(h/2))), (0, 255, 0))
-					cv2.line(annotated_frame, (0, 1080), (960, 480), (0, 0, 255))
+					cv2.line(annotated_frame, (0, 1080), (960, 480), (0, 0, 255), 4)
 					m1 = (y-h/2-1080)/(x+w/2-0)
 					angle = float((np.arctan(abs(m1))*180/3.14)-(np.arctan(abs(-5/8))*180/3.14))
 				else:
 					cv2.line(annotated_frame, (1920, 1080), ((int(x)-int(w/2)), (int(y)-int(h/2))), (0, 255, 0))
-					cv2.line(annotated_frame, (1920, 1080), (960, 480), (0, 0, 255))
+					cv2.line(annotated_frame, (1920, 1080), (960, 480), (0, 0, 255), 4)
 					m1 = (y-h/2-1080)/(x+w/2-1920)
 					angle = float((np.arctan(abs(m1))*180/3.14)-(np.arctan(abs((5/8)))*180/3.14))
 
@@ -82,14 +86,16 @@ for file in files[3500:]:
 					# Using previous 6 frames to determine ideal velocity and angle_diff values
 					if len(vel_angle[int(box[j])][0]) == 6:
 						vel = statistics.median(vel_angle[int(box[j])][0])
+						angle_stdev = statistics.stdev(vel_angle[int(box[j])][1])
 						ttc = distance[int(box[j])][1]/vel
-
+						print("stddev", int(box[j]), statistics.stdev(vel_angle[int(box[j])][1]), ttc)
 						angle_diff = vel_angle[int(box[j])][1][-1]-vel_angle[int(box[j])][1][0]
 
 						vel_angle[int(box[j])][0].pop(0) # Remove the first stored value in the velocity array, i.e. the value at index 0
 						vel_angle[int(box[j])][1].pop(0) # Remove the first stored value in the angle array, i.e. the value at index 0
 
-						if ttc<0.7 and angle_diff<0 and angle<6:
+						# if ttc<0.7 and angle_diff<0 and angle<5:
+						if ttc<1 and angle_diff<0 and angle_stdev>1 and angle<5:
 							print(int(box[j]), ttc)
 							# Set warning to 1 for next 20 frames
 							warning = 1
@@ -111,5 +117,5 @@ for file in files[3500:]:
 	cv2.imshow("YOLOv8 Tracking", annotated_frame)
 
 	# Press q to exit
-	if cv2.waitKey(1) & 0xFF == ord('q'):
-		exit()
+	if cv2.waitKey(0) & 0xFF == ord('q'):
+		continue

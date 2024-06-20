@@ -1,6 +1,6 @@
-path: /../kaggle/input/binary/datasets/
+path: /../kaggle/input/final-dataset/dataset/
 train: ../train/images/
 val: ../val/images/
 test: ../test/images/
-nc: 1
-names: ['vehicle']
+nc: 3
+names: ['small', 'medium', 'large']

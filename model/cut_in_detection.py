@@ -6,7 +6,7 @@ import os
 import numpy as np
 # Place this file and best.pt file in idd_mm_primary folder
 
-model = YOLO("best.pt")
+model = YOLO("best.onnx")
 
 def find_distance(height_px, vehicle_class):
 	real_height = {0: 1000, 1:1600, 2:4000} # In mm
@@ -37,10 +37,10 @@ vel_angle = dict()
 warning = 0
 count = 0
 # Use slicing files[:] to loop through small batch of files
-for file in files[0000:]:
+for file in files[3500:]:
 	frame = cv2.imread(f'./idd_multimodal/primary/{drive_sequence}/leftCamImgs/{file}')
 	try:
-		results = model.track(frame, conf=0.75, persist=True)
+		results = model.track(frame, conf=0.75, persist=True, iou=0.95, imgsz=(1920,1088))
 	except np.linalg.LinAlgError:
 		continue
 	annotated_frame = results[0].plot()
@@ -68,13 +68,13 @@ for file in files[0000:]:
 			# Initialize distance of object
 			if int(box[j]) not in distance.keys():
 				distance[int(box[j])] = [0, 0]
-				distance[int(box[j])][1] = float(find_distance(h, vehicle_class[j]))
+				distance[int(box[j])][1] = float(find_distance(h, vehicle_class[j]))-1.5
 				continue
 			else:
 				distance[int(box[j])][0] = distance[int(box[j])][1]
-				distance[int(box[j])][1] = float(find_distance(h, vehicle_class[j]))
+				distance[int(box[j])][1] = float(find_distance(h, vehicle_class[j]))-1.5
 
-				v = abs(distance[int(box[j])][1]-distance[int(box[j])][0])/0.33 # Time interval is 1/15, so distance/time_interval
+				v = abs(distance[int(box[j])][1]-distance[int(box[j])][0])*15 # Time interval is 1/15, so distance/time_interval
 
 
 				if x+w/2<center_frame_w: # Find difference between consecutive angles to determine if a car is cutting in
@@ -96,7 +96,7 @@ for file in files[0000:]:
 
 				else:
 					# Using previous 6 frames to determine ideal velocity and angle_diff values
-					if len(vel_angle[int(box[j])][0]) == 6:
+					if len(vel_angle[int(box[j])][0]) == 5:
 						vel = statistics.median(vel_angle[int(box[j])][0])
 						angle_stdev = statistics.stdev(vel_angle[int(box[j])][1])
 						ttc = distance[int(box[j])][1]/vel
@@ -108,7 +108,7 @@ for file in files[0000:]:
 						vel_angle[int(box[j])][1].pop(0) # Remove the first stored value in the angle array, i.e. the value at index 0
 
 						# if ttc<0.7 and angle_diff<0 and angle<5:
-						if ttc<0.7 and angle_diff<0 and angle_stdev > 3 and angle<10:
+						if ttc<0.8 and angle_diff<0 and angle_stdev > 1.5 and angle<5:
 							print(int(box[j]), ttc)
 							# Set warning to 1 for next 20 
 							warning = 1

@@ -28,7 +28,7 @@ def find_distance(height_px, vehicle_class):
 	distance = (focal_length*real_height[int(vehicle_class)]*frame_height)/(height_px*sensor_height)
 	return distance/1000
 
-drive_sequence = "d2" # d0, d1, d2
+drive_sequence = "d0" # d0, d1, d2
 files = os.listdir(f'./idd_multimodal/primary/{drive_sequence}/leftCamImgs')
 
 
@@ -47,16 +47,17 @@ slope_l2 = abs((right_lane_p2[1]-right_lane_p1[1])/(right_lane_p2[0]-right_lane_
 distance = dict()
 vel_angle = dict()
 warnings = dict()
-count = 0
+
 # Use slicing files[:] to loop through small batch of files
-for file in files[3475:]:
+for file in files[2700:]:
+	start_time = time.time()
 	frame = cv2.imread(f'./idd_multimodal/primary/{drive_sequence}/leftCamImgs/{file}')
 	resized_img = cv2.resize(frame, (640, 384))
 	try:
 		results = model.track(resized_img, conf=0.70, persist=True, iou=0.90)
 	except np.linalg.LinAlgError:
 		continue
-	# annotated_frame = results[0].plot()
+	
 	cv2.line(frame, left_lane_p1, left_lane_p2, (255, 255, 255), 2, cv2.LINE_AA)
 	cv2.line(frame, right_lane_p1, right_lane_p2, (255, 255, 255), 2, cv2.LINE_AA)
 
@@ -101,13 +102,9 @@ for file in files[3475:]:
 
 
 				if x+w/2<center_frame_w: # Find difference between consecutive angles to determine if a car is cutting in
-					# cv2.line(frame, left_lane_p1, ((int(x)+int(w/2)), (int(y)-int(h/2))), (0, 255, 0))
-					
 					m = (y-(h/2)-left_lane_p1[1])/(x+(w/2)-left_lane_p1[0])
 					angle = float(((np.arctan(abs(m))-(np.arctan(slope_l1)))*180/np.pi))
 				else:
-					# cv2.line(frame, right_lane_p1, ((int(x)-int(w/2)), (int(y)-int(h/2))), (0, 255, 0))
-					
 					m = (y-(h/2)-right_lane_p1[1])/(x-(w/2)-right_lane_p1[0])
 					angle = float(((np.arctan(abs(m))-(np.arctan(slope_l2)))*180/np.pi))
 
@@ -125,7 +122,6 @@ for file in files[3475:]:
 						ttc = distance[int(box[j])][1]/vel
 						
 						angle_diff = vel_angle[int(box[j])][1][-1]-vel_angle[int(box[j])][1][-2]
-						print("stddev", int(box[j]), ttc, angle_diff, statistics.stdev(vel_angle[int(box[j])][1]), angle)
 
 						vel_angle[int(box[j])][0].pop(0) # Remove the first stored value in the velocity array, i.e. the value at index 0
 						vel_angle[int(box[j])][1].pop(0) # Remove the first stored value in the angle array, i.e. the value at index 0
@@ -165,9 +161,8 @@ for file in files[3475:]:
 			del warnings[key]
 			break
 
+	cv2.putText(frame, f"FPS: {int(1.0 / (time.time() - start_time))}", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)
 	cv2.imshow("YOLOv8 Tracking", frame)
-	if results[0].speed['inference']<33:
-		time.sleep((33-results[0].speed['inference'])/1000)
 
 	# Press q to exit
 	if cv2.waitKey(1) & 0xFF == ord('q'):

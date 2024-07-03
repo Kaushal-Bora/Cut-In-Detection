@@ -121,21 +121,21 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
 
    Our algorithm identifies a cut-in event by analyzing the dynamic behavior of vehicles relative to lane markings. The detection process involves the following key components:
 
-   a) Temporal Analysis:
+   *a) Temporal Analysis*
    - We examine vehicle behavior over a short window of 5 consecutive frames.
    - This approach allows us to capture rapid changes in vehicle positioning and orientation.
 
-   b) Cut-in Criteria:
+   *b) Cut-in Criteria*
    - Angle Variation: The standard deviation of the vehicle's angle relative to lane markings must exceed 1.5 degrees over the 5-frame window. This threshold captures significant directional changes indicative of a cut-in maneuver.
    - Time-to-Collision (TTC): The estimated TTC must be less than 0.8 seconds. This criterion ensures we focus on imminent and potentially hazardous cut-in events.
 
-   c) Vehicle Tracking and Risk Assessment:
+   *c) Vehicle Tracking and Risk Assessment*
    - Any vehicle with a TTC less than 3 seconds is flagged for close monitoring.
    - These flagged vehicles are tracked for an extended period of 30 frames.
    - Visual Feedback: The tracking marker's color dynamically changes based on the currentTTC value, providing an intuitive representation of risk level.
    <br><br><img src="media\marker.jpeg" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
 
-   d) Cut-In Event Flagging:
+   *d) Cut-In Event Flagging*
    - When a vehicle satisfies the cut-in criteria, it is immediately flagged as a cut-in event.
    - Visual Indicator: A prominent "CUT-IN" text is displayed directly over the vehicle in the video frame.
    - This text appears in addition to the color-coded tracking marker, providing clear and immediate identification of cut-in events.

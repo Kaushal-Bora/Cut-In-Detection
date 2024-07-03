@@ -88,9 +88,11 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
 
    We use a pinhole camera model to estimate the distance to each detected vehicle:
 
-   <figure style="text-align:center">
-    <img src="media/equation.png" width="75%" alt="Vehicle Cut-In Detection Demo">
-   </figure>
+   <div style="text-align:center">
+   <a href='https://photo.stackexchange.com/questions/12434/how-do-i-calculate-the-distance-of-an-object-in-a-photo'>
+   <img src="media/equation.png" width="90%" alt="Vehicle Cut-In Detection Demo">
+   </a>
+   </div>
 
    Where:
    - f: focal length (mm)

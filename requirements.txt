@@ -1,0 +1,5 @@
+ultralytics==8.2.48
+opencv-python==4.10.0.84
+dill==0.3.8
+lapx==0.5.9.post1
+

@@ -53,7 +53,7 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
    - We've streamlined the detection classes to three categories based on vehicle height ($\text{m}$):
      1. **Small ($1 \text{ m}$) -** Motorcycles and two-wheelers
      2. **Medium ($1.6 \text{ m}$) -** Cars and autorickshaws
-     3. **Large ($ 4 \text{ m}$) -** Buses and trucks
+     3. **Large ($4 \text{ m}$) -** Buses and trucks
    - This simplified classification system allows for:
      - Focused training on vehicle types most relevant to cut-in detection
      - Potentially improved model accuracy for our specific use case
@@ -88,9 +88,9 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
 
    We use a pinhole camera model to estimate the distance to each detected vehicle:
 
-   <div style="text-align:center">
-   <img src="media\equation.png" width="75%"  alt="Vehicle Cut-In Detection Demo">
-   </div>
+   <figure style="text-align:center">
+    <img src="media/equation.png" width="75%" alt="Vehicle Cut-In Detection Demo">
+   </figure>
 
    Where:
    - f: focal length (mm)

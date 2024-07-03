@@ -75,7 +75,7 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
    - Left and right lane markings are positioned at 33% (0.33) of the image width from the center at the bottom of the frame.
    - These reference lines converge as they extend upward in the image, mimicking perspective.
    - At the middle of the frame (representing the farthest visible point), the markings are positioned at 2% (0.02) of the image width from the center.
-   <br><br><img src="media\lane.jpeg" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
+   <br><br><img src="media\lane.png" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
 
    *c) Advantages of This Approach*
    - Consistency: Provides a stable reference even on roads with no visible lane markings.

@@ -51,10 +51,12 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
    - Our system employs a YOLOv8 model, fine-tuned on the IDD-Detection (India Driving Dataset) for robust vehicle detection in Indian traffic scenarios.
    - The IDD-Detection dataset comprises over 40,000 meticulously annotated images across 15 distinct labels, providing a rich foundation for training.
    - We've streamlined the detection classes to three categories based on vehicle height ($\text{m}$):
-     1. **Small ($1 \text{ m}$) -** Motorcycles and two-wheelers
-     2. **Medium ($1.6 \text{ m}$) -** Cars and autorickshaws
-     3. **Large ($4 \text{ m}$) -** Buses and trucks
+     
+     - **Small ($1 \text{ m}$) -** Motorcycles and two-wheelers
+     - **Medium ($1.6 \text{ m}$) -** Cars and autorickshaws
+     - **Large ($4 \text{ m}$) -** Buses and trucks
    - This simplified classification system allows for:
+     
      - Focused training on vehicle types most relevant to cut-in detection
      - Potentially improved model accuracy for our specific use case
      - Simplified post-processing and cut-in event analysis
@@ -87,10 +89,13 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
    *a) Distance Calculation*
 
    We use a pinhole camera model to estimate the distance to each detected vehicle:
-
-   <figure style="text-align:center">
-    <img src="media/equation.png" width="75%" alt="Vehicle Cut-In Detection Demo">
-   </figure>
+   <br><br>
+   <div style="text-align:center">
+   <a href='https://photo.stackexchange.com/questions/12434/how-do-i-calculate-the-distance-of-an-object-in-a-photo'>
+   <img src="media/equation.png" width="90%" alt="Vehicle Cut-In Detection Demo">
+   </a>
+   </div>
+   <br>
 
    Where:
    - f: focal length (mm)

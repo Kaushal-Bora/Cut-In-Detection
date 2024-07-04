@@ -58,6 +58,9 @@ distance = dict()
 vel_angle = dict()
 warnings = dict()
 
+cv2.namedWindow('Cut-In Detection', cv2.WINDOW_NORMAL)
+# cv2.setWindowProperty('Cut-In Detection', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
 # Use slicing files[:] to loop through small batch of files
 for file in files:
 	start_time = time.time()
@@ -172,8 +175,13 @@ for file in files:
 			break
 
 	cv2.putText(frame, f"FPS: {int(1.0 / (time.time() - start_time))}", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 2)
-	cv2.imshow("YOLOv8 Tracking", frame)
+	cv2.putText(frame, "Press q to exit", (int(frame_width-250), 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2)
+	cv2.imshow("Cut-In Detection", frame)
 
 	# Press q to exit
 	if cv2.waitKey(1) & 0xFF == ord('q'):
-		exit()
+		break
+	if cv2.getWindowProperty('Cut-In Detection', cv2.WND_PROP_VISIBLE) < 1:
+		break
+
+cv2.destroyAllWindows()

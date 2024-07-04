@@ -2,7 +2,7 @@
 
 This project implements a vehicle cut-in detection system optimized for Indian driving conditions. It utilizes the YOLOv8 model for object detection and analyzes vehicle angles relative to lane markings to determine cut-in events.
 
-![Vehicle Cut-In Detection Clip](media\clip.gif)
+![Vehicle Cut-In Detection Clip](https://github.com/nikp9/gif-hosting/blob/master/clip.gif)
 
 This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimodal dataset. [Click here](https://youtu.be/iW2fbrRtcjA) for the full video demonstration.
 

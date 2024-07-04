@@ -41,7 +41,7 @@ This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimo
 1. Run the detection:
 
     ```bash
-    python cut_in_detection.py
+    python cut_in_detection.py samples
     ```
 
 ## How It Works

@@ -64,7 +64,7 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
 
    While reducing the number of classes doesn't significantly affect YOLOv8's inference time, as it primarily impacts the model's output layer, it does simplify our subsequent processing steps. Our model efficiently processes each frame of the input video, identifying and classifying vehicles according to these optimized categories, setting the stage for precise cut-in event analysis.
 
-### 2. Lane Marking Detection
+### 2. Lane Markings
 
    Given the unique challenges of Indian roads, where lane markings are often absent, faded, or inconsistent, we've developed a novel approach to establish reference points for vehicle angle calculations:
 
@@ -99,11 +99,11 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
    <br>
 
    Where:
-   - f: focal length (mm)
-   - real height: actual height of the vehicle (mm)
-   - image height: height of the entire image (pixels)
-   - object height: height of the vehicle in the image (pixels)
-   - sensor height: height of the camera sensor (mm)
+   - *f:* focal length (mm)
+   - *real height:* actual height of the vehicle (mm)
+   - *image height:* height of the entire image (pixels)
+   - *object height:* height of the vehicle in the image (pixels)
+   - *sensor height:* height of the camera sensor (mm)
 
    *b) Relative Velocity Calculation*
    - We calculate the relative velocity by measuring the change in distance over consecutive frames.
@@ -133,7 +133,7 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
    *c) Vehicle Tracking and Risk Assessment*
    - Any vehicle with a TTC less than 3 seconds is flagged for close monitoring.
    - These flagged vehicles are tracked for an extended period of 30 frames.
-   - Visual Feedback: The tracking marker's color dynamically changes based on the currentTTC value, providing an intuitive representation of risk level.
+   - Visual Feedback: The tracking marker's color dynamically changes based on the current TTC value, providing an intuitive representation of risk level.
    <br><br><img src="media\marker.jpeg" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
 
    *d) Cut-In Event Flagging*

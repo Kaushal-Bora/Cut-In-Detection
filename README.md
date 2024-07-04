@@ -88,15 +88,13 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
 ### 3. Vehicle Metrics: Distance, Velocity, TTC, and Angle Calculation
 
    *a) Distance Calculation*
-
+   
    We use a pinhole camera model to estimate the distance to each detected vehicle:
-   <br><br>
-   <div style="text-align:center">
-   <a href='https://photo.stackexchange.com/questions/12434/how-do-i-calculate-the-distance-of-an-object-in-a-photo'>
-   <img src="media/equation.png" width="90%" alt="Vehicle Cut-In Detection Demo">
-   </a>
-   </div>
-   <br>
+    <br><br>
+    <a href='https://photo.stackexchange.com/questions/12434/how-do-i-calculate-the-distance-of-an-object-in-a-photo'>
+    <img src="media/equation.png" width="100%" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
+    </a>
+    <br>
 
    Where:
    - *f:* focal length (mm)

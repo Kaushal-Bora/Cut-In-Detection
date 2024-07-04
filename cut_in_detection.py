@@ -5,9 +5,9 @@ import statistics
 import os
 import numpy as np
 import time
-# Place this file and best.pt file in idd_mm_primary folder
+import sys
 
-model = YOLO("best.pt")
+model = YOLO("model/best.pt")
 
 def get_red_green_color(value):
 	inverted_value = 1 - value
@@ -28,8 +28,18 @@ def find_distance(height_px, vehicle_class):
 	distance = (focal_length*real_height[int(vehicle_class)]*frame_height)/(height_px*sensor_height)
 	return distance/1000
 
-drive_sequence = "d0" # d0, d1, d2
-files = os.listdir(f'./idd_multimodal/primary/{drive_sequence}/leftCamImgs')
+try:
+	image_directory = sys.argv[1]
+except IndexError:
+	print("Please provide path to image_directory")
+	print("\nUsage: python cut_in_detection.py <image_directory_name>")
+	print("Example: python cut_in_detection.py ./images")
+	sys.exit(1)
+
+if image_directory[-1] == '/':
+	image_directory = image_directory[:-1]
+
+files = os.listdir(image_directory)
 
 
 # Frame dimensions and lane markings
@@ -49,9 +59,9 @@ vel_angle = dict()
 warnings = dict()
 
 # Use slicing files[:] to loop through small batch of files
-for file in files[2700:]:
+for file in files:
 	start_time = time.time()
-	frame = cv2.imread(f'./idd_multimodal/primary/{drive_sequence}/leftCamImgs/{file}')
+	frame = cv2.imread(f'{image_directory}/{file}')
 	resized_img = cv2.resize(frame, (640, 384))
 	try:
 		results = model.track(resized_img, conf=0.70, persist=True, iou=0.90)

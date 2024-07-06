@@ -90,18 +90,18 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
    *a) Distance Calculation*
    
    We use a pinhole camera model to estimate the distance to each detected vehicle:
-    <br><br>
-    <a href='https://photo.stackexchange.com/questions/12434/how-do-i-calculate-the-distance-of-an-object-in-a-photo'>
-    <img src="media/equation.png" width="100%" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
-    </a>
-    <br>
 
+<p align="center">
+$\huge\textrm{Distance to object}(mm) = \frac{f(mm)\,\times\, \textrm{real height}(mm)\,\times\, \textrm{image height}(pixels)} {\textrm{object height}(pixels)\,\times\, \textrm{sensor height}(mm)}$
+
+</p>
+    
    Where:
-   - *f:* focal length (mm)
-   - *real height:* actual height of the vehicle (mm)
-   - *image height:* height of the entire image (pixels)
-   - *object height:* height of the vehicle in the image (pixels)
-   - *sensor height:* height of the camera sensor (mm)
+   - $\textrm{f:}$ focal length (mm)
+   - $\textrm{real height:}$ actual height of the vehicle (mm)
+   - $\textrm{image height:}$ height of the entire image (pixels)
+   - $\textrm{object height:}$ height of the vehicle in the image (pixels)
+   - $\textrm{sensor height:}$ height of the camera sensor (mm)
 
    *b) Relative Velocity Calculation*
    - We calculate the relative velocity by measuring the change in distance over consecutive frames.

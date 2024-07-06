@@ -33,9 +33,9 @@ This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimo
     ```powershell
     python -m venv venv
     ```
-
+    
     ```powershell
-    venv\Scripts\activate  # On Linux, use "source venv/bin/activate"
+    venv\Scripts\activate #For Linux/Mac, use "source venv/bin/activate"
     ```
 
     ```powershell

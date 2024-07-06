@@ -32,7 +32,7 @@ This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimo
 
     ```bash
     python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    venv\Scripts\activate  # On Linux, use "source venv/bin/activate"
     pip install -r requirements.txt
     ```
 

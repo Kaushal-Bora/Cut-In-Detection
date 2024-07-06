@@ -30,9 +30,15 @@ This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimo
 
 2. Create virtual environment and install the required packages:
 
-    ```bash
+    ```powershell
     python -m venv venv
+    ```
+
+    ```powershell
     venv\Scripts\activate  # On Linux, use "source venv/bin/activate"
+    ```
+
+    ```powershell
     pip install -r requirements.txt
     ```
 
@@ -40,7 +46,7 @@ This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimo
 
 1. Run the detection:
 
-    ```bash
+    ```powershell
     python cut_in_detection.py samples
     ```
 

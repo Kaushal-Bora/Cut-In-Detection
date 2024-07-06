@@ -89,12 +89,13 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
 
    *a) Distance Calculation*
    
-   We use a pinhole camera model to estimate the distance to each detected vehicle:
-
+   &emsp;We use a pinhole camera model to estimate the distance to each detected vehicle:
+   
+<br>
 <p align="center">
 $\huge\textrm{Distance to object}(mm) = \frac{f(mm)\,\times\, \textrm{real height}(mm)\,\times\, \textrm{image height}(pixels)} {\textrm{object height}(pixels)\,\times\, \textrm{sensor height}(mm)}$
-
 </p>
+<br>
     
    Where:
    - $\textrm{f:}$ focal length (mm)

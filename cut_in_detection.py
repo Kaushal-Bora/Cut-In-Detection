@@ -128,7 +128,7 @@ for file in files:
 					vel_angle[int(box[j])].append([angle])
 
 				else:
-					# Using previous 6 frames to determine ideal velocity and angle_diff values
+					# Using previous 5 frames to determine ideal velocity and angle_diff values
 					if len(vel_angle[int(box[j])][0]) == 5:
 						vel = statistics.median(vel_angle[int(box[j])][0])
 						angle_stdev = statistics.stdev(vel_angle[int(box[j])][1])
@@ -139,7 +139,6 @@ for file in files:
 						vel_angle[int(box[j])][0].pop(0) # Remove the first stored value in the velocity array, i.e. the value at index 0
 						vel_angle[int(box[j])][1].pop(0) # Remove the first stored value in the angle array, i.e. the value at index 0
 
-						# if ttc<0.7 and angle_diff<0 and angle<5:
 						if ttc<3 and angle_diff<0 and angle_stdev > 0.5 and angle<5:
 							if ttc<0.8 and angle_stdev > 1.5:
 								warnings[int(box[j])] = [int(x), int(y), int(w), int(h), ttc, 30, 1]
@@ -155,7 +154,7 @@ for file in files:
 					vel_angle[int(box[j])][1].append(angle)
 
 
-	# Print the cut-in warning for next 20 frames
+	# Print the cut-in warning and track vehicle for next 30 frames
 	for key, value in warnings.items():
 		font = cv2.FONT_HERSHEY_SIMPLEX
 		if value[5] > 0:

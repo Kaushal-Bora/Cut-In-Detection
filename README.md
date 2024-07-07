@@ -68,7 +68,8 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
      - Potentially improved model accuracy for our specific use case
      - Simplified post-processing and cut-in event analysis
 
-   While reducing the number of classes doesn't significantly affect YOLOv8's inference time, as it primarily impacts the model's output layer, it does simplify our subsequent processing steps. Our model efficiently processes each frame of the input video, identifying and classifying vehicles according to these optimized categories, setting the stage for precise cut-in event analysis.
+   While reducing the number of classes doesn't significantly affect YOLOv8's inference time, as it primarily impacts the model's output layer, it does simplify our subsequent processing steps. Our model efficiently processes each frame of the input video, identifying and classifying vehicles according to these optimized categories, setting the stage for precise cut-in event analysis. For a detailed look at our vehicle detection implementation, including model training and evaluation, please refer to our Kaggle notebook: [Vehicle Detection Kaggle Notebook](https://www.kaggle.com/code/nikhilparihar09/640x384-idd-detection-final-training)
+
 
 ### 2. Lane Markings
 

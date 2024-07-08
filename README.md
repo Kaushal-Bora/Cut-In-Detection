@@ -15,7 +15,7 @@ This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimo
 
 ## Requirements
 
-- Python 3.8+
+- Python 3.10+
 - PyTorch 2.0+
 - OpenCV 4.0+
 - Ultralytics

@@ -68,21 +68,22 @@ Our vehicle cut-in detection algorithm combines YOLOv8 object detection with geo
      - Potentially improved model accuracy for our specific use case
      - Simplified post-processing and cut-in event analysis
 
-   While reducing the number of classes doesn't significantly affect YOLOv8's inference time, as it primarily impacts the model's output layer, it does simplify our subsequent processing steps. Our model efficiently processes each frame of the input video, identifying and classifying vehicles according to these optimized categories, setting the stage for precise cut-in event analysis. For a detailed look at our vehicle detection implementation, including model training and evaluation, please refer to our Kaggle notebook: [Vehicle Detection Kaggle Notebook](https://www.kaggle.com/code/nikhilparihar09/640x384-idd-detection-final-training)
+   While reducing the number of classes doesn't significantly affect YOLOv8's inference time, as it primarily impacts the model's output layer, it does simplify our subsequent processing steps. Our model efficiently processes each frame of the input video, identifying and classifying vehicles according to these optimized categories, setting the stage for precise cut-in event analysis.
+   ### For a detailed look at our vehicle detection implementation, including model training and evaluation, please refer to our Kaggle notebook: [Vehicle Detection Kaggle Notebook](https://www.kaggle.com/code/nikhilparihar09/640x384-idd-detection-final-training)
 
 
 ### 2. Lane Markings
 
    Given the unique challenges of Indian roads, where lane markings are often absent, faded, or inconsistent, we've developed a novel approach to establish reference points for vehicle angle calculations:
 
-   *a) Static Lane Marking Syste*
+   *a) Static Lane Marking System*
    - Instead of relying on traditional lane detection algorithms, we use a static reference system.
    - This system is based on analysis of typical road structures in Indian driving conditions.
 
    *b) Lane Marking Placement*
    - Left and right lane markings are positioned at 33% (0.33) of the image width from the center at the bottom of the frame.
    - These reference lines converge as they extend upward in the image, mimicking perspective.
-   - At the middle of the frame (representing the farthest visible point), the markings are positioned at 2% (0.02) of the image width from the center.
+   - At the middle of the frame (representing the farthest visible point), the markings are positioned at 2% (0.02) of the image width from the center
    <br><br><img src="media\lane.png" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
 
    *c) Advantages of This Approach*
@@ -149,3 +150,11 @@ $\huge\textrm{Distance to object}(mm) = \frac{f(mm)\,\times\, \textrm{real heigh
    <br><br><img src="media\cutin.jpeg" alt="Vehicle Cut-In Detection Demo" style="vertical-align: middle;">
 
    This comprehensive approach allows our system to accurately detect, flag, and visually indicate cut-in events in real-time. By combining dynamic analysis with clear visual feedback, we ensure reliable performance and easy interpretation of results in the complex and dynamic environment of Indian roads.
+
+   # References
+
+[1]  Distance Calculation: [How do I calculate the distance of an object in a photo?](https://photo.stackexchange.com/questions/12434/how-do-i-calculate-the-distance-of-an-object-in-a-photo)
+
+[2]  Time to collision: [Time to collision estimation for vehicles coming from behind using in-vehicle camera.](https://ieeexplore.ieee.org/document/8769404)
+
+[3]  IDD-Dataset: [IDD: A Dataset for Exploring Problems of Autonomous Navigation in Unconstrained Environments](https://arxiv.org/abs/1811.10200v1)

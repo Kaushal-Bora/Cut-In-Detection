@@ -7,9 +7,9 @@ This project implements a vehicle cut-in detection system optimized for Indian d
 This GIF demonstrates our vehicle cut-in detection system working on IDD-Multimodal dataset.
 
 ## Important Links
-[Full video demonstration](https://www.youtube.com/playlist?list=PLF2rfk7LtOyrXkF4xX1TGbQwL_Lam1DQL)
+Video Demo: [YouTube Link](https://www.youtube.com/playlist?list=PLF2rfk7LtOyrXkF4xX1TGbQwL_Lam1DQL)
 
-[Report and Presentation](https://drive.google.com/drive/folders/1Ii5bMBY3pm02OBLU2_nq-JbdLVKlnfgZ?usp=sharing)
+Report and Presentation: [Drive Link](https://drive.google.com/drive/folders/1Ii5bMBY3pm02OBLU2_nq-JbdLVKlnfgZ?usp=sharing)
 
 ## Features
 

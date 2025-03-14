@@ -40,7 +40,11 @@ Report and Presentation: [Drive Link](https://drive.google.com/drive/folders/1Ii
     ```
     
     ```powershell
-    venv\Scripts\activate #For Linux/Mac, use "source venv/bin/activate"
+    venv\Scripts\activate # For Windows 
+    ```
+    
+    ```powershell
+    source venv/bin/activate # For Linux/Mac
     ```
 
     ```powershell
